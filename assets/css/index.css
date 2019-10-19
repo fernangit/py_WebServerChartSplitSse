@@ -1,0 +1,33 @@
+body{
+    margin:0px;
+    background: #000;
+}
+ /* --- 外枠の定義 ---------------------------------------------*/
+.flexbox {
+  margin         : auto;                 /* 中央寄せ		*/
+  box-sizing     : border-box;           /* 罫線も含む長さ      */
+  background     : #000;                 /* BOXの背景色         */
+  display        : flex;                 /* FlexBox定義         */
+  flex-wrap      : wrap;                 /* 折り返し定義        */
+}
+ /* --- 個別のBOXの定義 --------------------------------------- */
+#split-left, #split-right {
+  box-sizing     : border-box;           /* 罫線も含む長さ      */
+  background     : #000;                 /* BOXの背景色         */
+  color		 : #fff;
+  position	 : relative;
+  top		 : 20vh;
+  text-align	 : center;
+  width          : 100px;                 /* サンプルBOXの幅     */
+  height         : 100px;                 /* サンプルBOXの幅     */
+  margin         : 2px;                  /* サンプルBOXの間     */
+  flex-grow      : 1;                    /* 各BOXを均等に割当て */
+}
+#split-left {
+  font-family	 : "arial";
+  font-size	 : 20vw;
+}
+#split-right {
+  font-family	 : "arial";
+  font-size	 : 10vw;
+}
