@@ -1,5 +1,5 @@
 # py_WebServerChartSplitSse
-Display a chart and send an event on the python web server bottle.
+Dynamic display switching of a chart and messages on the python web server bottle.
 ---
 * python Webサーバ  
   * WebフレームワークBottleの使用  
