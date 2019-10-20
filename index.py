@@ -8,7 +8,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, 'assets')
 
 @route('/')
-#@view("index.min.html")
 @view("index.html")
 def index():
     return dict()
