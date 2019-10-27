@@ -74,7 +74,7 @@ def mean_emotion(predict, predicts):
 #    print(emotion_text,emotion_ratio)
     print('{}'.format(emotion_phrase_rand))
 
-    return predicts
+    return predicts, predict_mean
 
 def main():
     # 初期化
