@@ -13,13 +13,6 @@
     <body>
       <script>
         emotion = new Array(7);
-//        emotion[0] = 1;
-//        emotion[1] = 2;
-//        emotion[2] = 4;
-//        emotion[3] = 10;
-//        emotion[4] = 21;
-//        emotion[5] = 12;
-//        emotion[6] = 9;
         bestIndex = 0;
         let eventSrc = new EventSource("/sse")
         eventSrc.addEventListener("message", getMessage)
@@ -27,7 +20,6 @@
           
         //SSEメッセージ受信
         function getMessage(e) {
-//          emotion[Math.floor( Math.random() * 7)] = parseInt(e.data, 10);
 //          console.log(parseInt(e.data, 10));
           obj = JSON.parse(e.data);
           console.log(obj);
@@ -38,9 +30,9 @@
           emotion[4] = obj.sad;
           emotion[5] = obj.surprise;
           emotion[6] = obj.neutral;
-          emotion[Math.floor( Math.random() * 7)] = obj.angry;
-          console.log(emotion[Math.floor( Math.random() * 7)]);
-          console.log(Math.floor( Math.random() * 7));
+//          emotion[Math.floor( Math.random() * 7)] = obj.angry;
+//          console.log(emotion[Math.floor( Math.random() * 7)]);
+//          console.log(Math.floor( Math.random() * 7));
           //感情の最大値Index
           bestIndex = emotion.indexOf(Math.max.apply(null, emotion));
           console.log(bestIndex);

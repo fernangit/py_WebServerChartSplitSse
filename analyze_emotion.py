@@ -54,7 +54,7 @@ def emotion(model):
 # 平均化
 def mean_emotion(predict, predicts):
     #結果挿入
-    predicts = np.vstack(predicts, predict)
+    predicts = np.vstack((predicts, predict))
     predicts = np.delete(predicts, 0, axis=0)
 #    print(predicts)
 
