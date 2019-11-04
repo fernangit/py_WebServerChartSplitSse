@@ -4,8 +4,10 @@ import time
 import os
 import random
 import json
+import pickle
 from threading import (Event, Thread)
 
+import numpy as np
 import picamera
 import picamera.array
 import cv2
@@ -17,8 +19,6 @@ cascade_file = "/home/pi/work/haarcascades/haarcascade_frontalface_alt2.xml"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, 'assets')
 
-#スレッド間イベント
-event = Event()
 #感情平均
 predict_mean = np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.4])
 
@@ -37,15 +37,7 @@ def sse():
         print(enc)
         print(type(enc))
         yield 'data: %s\n\n' % enc
-#        yield 'data:"hello SSE"\n\n'
-#        yield 'data: %s\n' 'retry:10\n\n' % str(count)
-#        yield 'data: %i\n\n' % str(count)
-#        yield 'data: %s\n\n' % emotion['angry']
-#        yield 'data: {0}\n\n' .format(count)
-#        yield 'data: {0}\n\n' .format(emotion['angry'])
-#        time.sleep(1)
-         #イベント待ち
-         event.wait()
+        time.sleep(1)
 ####テスト ランダムに感情値を変えてみる
 #        rint = random.randint(0, 6)
 #        if rint == 0:
@@ -63,6 +55,10 @@ def sse():
 #        elif rint == 6:
 #            emotion['neutral'] = random.randint(1, 50)
 ####感情分析結果を反映する
+        with open('list.txt', 'rb') as l:
+            predict_mean = pickle.load(l)
+        print(predict_mean)
+
         emotion['angry'] = predict_mean[0]
         emotion['disgust'] = predict_mean[1]
         emotion['fear'] = predict_mean[2]
@@ -70,6 +66,7 @@ def sse():
         emotion['sad'] = predict_mean[4]
         emotion['surprise'] = predict_mean[5]
         emotion['neutral'] = predict_mean[6]
+        print(emotion)
 
 @route('/assets/css/<filename:path>')
 def send_static(filename):
@@ -84,7 +81,6 @@ def send_static(filename):
     return static_file(filename, root=f'{STATIC_DIR}/js')
 
 def face_analyze():
-    grobal predict_mean
     print('face_analyze')
     # 初期化
     model, predicts = em.init_emotion(10)
@@ -119,8 +115,10 @@ def face_analyze():
                     print(predict)
                     # 平均算出
                     predicts, predict_mean = em.mean_emotion(predict, predicts)
-                    #イベントセット
-                    event.set()
+                    print('face_analyze()')
+                    print(predict_mean)
+                    with open('list.txt', 'wb') as l:
+                        pickle.dump(predict_mean, l)
 
                 # system.arrayをウィンドウに表示
                 cv2.imshow('frame', stream.array)
