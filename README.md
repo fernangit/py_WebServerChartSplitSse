@@ -142,7 +142,9 @@ python index.py
 
 ### ブラウザ表示  
 ブラウザ上で  
-http://localhost:8080/
+http://localhost:8080/  
+* chromium-browserでKIOSK表示  
+  * chromium-browser --kiosk --incoginito localhost:8080    
 
 ## 参考情報
 Python Bottleフレームワーク  
