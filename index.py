@@ -33,11 +33,6 @@ def sse():
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Content_Type']  = 'text/event-stream'
     while (True):
-        enc = json.dumps(emotion)
-        print(enc)
-        print(type(enc))
-        yield 'data: %s\n\n' % enc
-        time.sleep(1)
 ####テスト ランダムに感情値を変えてみる
 #        rint = random.randint(0, 6)
 #        if rint == 0:
@@ -57,8 +52,9 @@ def sse():
 ####感情分析結果を反映する
         with open('list.txt', 'rb') as l:
             predict_mean = pickle.load(l)
-        print(predict_mean)
+        print('sse:', predict_mean)
 
+        print('before:', emotion)
         emotion['angry'] = predict_mean[0]
         emotion['disgust'] = predict_mean[1]
         emotion['fear'] = predict_mean[2]
@@ -66,7 +62,13 @@ def sse():
         emotion['sad'] = predict_mean[4]
         emotion['surprise'] = predict_mean[5]
         emotion['neutral'] = predict_mean[6]
-        print(emotion)
+        print('after:', emotion)
+
+        enc = json.dumps(emotion)
+        print(enc)
+        print(type(enc))
+        yield 'data: %s\n\n' % enc
+        time.sleep(1)
 
 @route('/assets/css/<filename:path>')
 def send_static(filename):
@@ -84,7 +86,7 @@ def face_analyze():
     print('face_analyze')
     # 初期化
     model, predicts = em.init_emotion(10)
-    print(predicts)
+    print('face_analyze:', predicts)
 
     with picamera.PiCamera() as camera:
         with picamera.array.PiRGBArray(camera) as stream:
