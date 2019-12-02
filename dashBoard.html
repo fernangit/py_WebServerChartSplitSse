@@ -99,13 +99,6 @@
 
 <script>
 emotion = new Array(7);
-emotion[0] = 1;
-emotion[1] = 2;
-emotion[2] = 4;
-emotion[3] = 10;
-emotion[4] = 21;
-emotion[5] = 12;
-emotion[6] = 9;
 bestIndex = 0;
 let eventSrc = new EventSource("/sse")
 eventSrc.addEventListener("message", getMessage)
@@ -124,7 +117,7 @@ function getMessage(e) {
     emotion[4] = obj.sad;
     emotion[5] = obj.surprise;
     emotion[6] = obj.neutral;
-    emotion[Math.floor( Math.random() * 7)] = obj.angry;
+//    emotion[Math.floor( Math.random() * 7)] = obj.angry;
     console.log(emotion[Math.floor( Math.random() * 7)]);
     console.log(Math.floor( Math.random() * 7));
     //感情の最大値Index
@@ -213,10 +206,10 @@ function getNews()
     }).then(function(json) {
         console.log(json)
         for (var i=0;i<json.articles.length;i++) {
-                var titleId = "item-text" + (i+1);
-                console.log(titleId);
-                var p = document.getElementById(titleId);
-                p.innerHTML = '・' + json.articles[i].title;
+            var titleId = "item-text" + (i+1);
+            console.log(titleId);
+            var p = document.getElementById(titleId);
+            p.innerHTML = '・' + json.articles[i].title;
         }
     });
 }
@@ -238,32 +231,32 @@ function getDate()
 
 function weatherIcon(param, spanId)
 {
-            //天気に応じた天気アイコンを表示させる
-            switch (param){
-            case 'Clouds':
+    //天気に応じた天気アイコンを表示させる
+    switch (param){
+        case 'Clouds':
             $(spanId).html("<img src='http://openweathermap.org/img/w/04d.png'>");
             break;
-            case 'Snow':
+        case 'Snow':
             $(spanId).html("<img src='http://openweathermap.org/img/w/13d.png'>");
             break;
-            case 'Rain':
+        case 'Rain':
             $(spanId).html("<img src='http://openweathermap.org/img/w/09d.png'>");
             break;
-            case 'Clear':
+        case 'Clear':
             $(spanId).html("<img src='http://openweathermap.org/img/w/01d.png'>");
             break;
-            case 'Fog':
+        case 'Fog':
             $(spanId).html("<img src='http://openweathermap.org/img/w/50d.png'>");
             break;
-            case 'Mist':
+        case 'Mist':
             $(spanId).html("<img src='http://openweathermap.org/img/w/50n.png'>");
             break;
-            case 'Haze':
+        case 'Haze':
             $(spanId).html("<img src='http://openweathermap.org/img/w/50d.png'>");
             break;
-            default:
+        default:
             $(spanId).html("<img src='http://openweathermap.org/img/w/01n.png'>");
-        }
+    }
 }
 
 function getWeather(cityId)
@@ -331,4 +324,4 @@ setInterval(sendRequest, RELOAD_INTERVAL_TIME);
 </script>  
   
 </body>
-</html>
+</html>file:///home/pi/forGit/py_WebServerChartSplitSse/index.py

@@ -145,6 +145,7 @@ python index.py
 http://localhost:8080/  
 * chromium-browserでKIOSK表示  
   * chromium-browser --kiosk --incoginito localhost:8080    
+* ALT + F4でKIOSKモード解除  
 
 ## 参考情報
 Python Bottleフレームワーク  

@@ -23,48 +23,49 @@ STATIC_DIR = os.path.join(BASE_DIR, 'assets')
 predict_mean = np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.4])
 
 @route('/')
-@view("index.html")
+#@view("index.html")
+@view("dashBoard.html")
 def index():
     return dict()
 
 @route('/sse')
 def sse():
-    emotion = {'angry': 0, 'disgust': 0, 'fear': 0, 'happy': 0, 'sad': 0, 'surprise': 0, 'neutral': 0}
+    value = {'angry': 0, 'disgust': 0, 'fear': 0, 'happy': 0, 'sad': 0, 'surprise': 0, 'neutral': 0}
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Content_Type']  = 'text/event-stream'
     while (True):
 ####テスト ランダムに感情値を変えてみる
 #        rint = random.randint(0, 6)
 #        if rint == 0:
-#            emotion['angry'] = random.randint(1, 50)
+#            value['angry'] = random.randint(1, 50)
 #        elif rint == 1:
-#            emotion['disgust'] = random.randint(1, 50)
+#            value['disgust'] = random.randint(1, 50)
 #        elif rint == 2:
-#            emotion['fear'] = random.randint(1, 50)
+#            value['fear'] = random.randint(1, 50)
 #        elif rint == 3:
-#            emotion['happy'] = random.randint(1, 50)
+#            value['happy'] = random.randint(1, 50)
 #        elif rint == 4:
-#            emotion['sad'] = random.randint(1, 50)
+#            value['sad'] = random.randint(1, 50)
 #        elif rint == 5:
-#            emotion['surprise'] = random.randint(1, 50)
+#            value['surprise'] = random.randint(1, 50)
 #        elif rint == 6:
-#            emotion['neutral'] = random.randint(1, 50)
+#            value['neutral'] = random.randint(1, 50)
 ####感情分析結果を反映する
         with open('list.txt', 'rb') as l:
             predict_mean = pickle.load(l)
         print('sse:', predict_mean)
 
-        print('before:', emotion)
-        emotion['angry'] = predict_mean[0]
-        emotion['disgust'] = predict_mean[1]
-        emotion['fear'] = predict_mean[2]
-        emotion['happy'] = predict_mean[3]
-        emotion['sad'] = predict_mean[4]
-        emotion['surprise'] = predict_mean[5]
-        emotion['neutral'] = predict_mean[6]
-        print('after:', emotion)
+        print('before:', value)
+        value['angry'] = predict_mean[0]
+        value['disgust'] = predict_mean[1]
+        value['fear'] = predict_mean[2]
+        value['happy'] = predict_mean[3]
+        value['sad'] = predict_mean[4]
+        value['surprise'] = predict_mean[5]
+        value['neutral'] = predict_mean[6]
+        print('after:', value)
 
-        enc = json.dumps(emotion)
+        enc = json.dumps(value)
         print(enc)
         print(type(enc))
         yield 'data: %s\n\n' % enc
