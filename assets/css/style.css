@@ -1,0 +1,138 @@
+.area-title{
+  font-family: 'Arial', sans-serif;
+  color: #ffffff;
+}
+
+.first-row{
+  display: flex;
+  flex-wrap: nowrap
+}
+
+.area{
+  border: 1px solid #6c757d;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 5px;
+  width: 28%;
+  min-height: 350px;
+  height: 100%;
+  height:auto;
+  min-height:100%;
+  position:relative;
+  text-align: center;
+}
+
+.area-1{
+  background: #808080;
+}
+.area-2{
+  background: #808080;
+}
+.area-3{
+  background: #008000;
+}
+.area-4{
+  background: #FF9966;
+}
+
+.area-text1{
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+}
+
+.area-text2{
+  font-size: 3rem;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+}
+
+.r-1{
+  margin: 5px;
+}
+ 
+.image-area{
+  overflow: hidden;
+}
+ 
+.image-area img{
+  width: 100%;
+  height: auto;
+}
+ 
+.discription-area{
+  flex-basis: 40%;
+  padding: 20px;
+}
+ 
+.btn{
+  color: #fff;
+  padding: 15px 25px;
+  width: 30%;
+  background: #1b95e0;
+  border-radius: 10px;
+}
+.title{
+  padding: 5px;
+  border: 1px solid #17a2b8;
+  border-radius: 10px;
+  background: #17a2b8;
+  color: #fff;
+  text-align: center;
+}
+ 
+.second-row{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+  flex-wrap: nowrap
+}
+ 
+.card{
+  border: 1px solid #6c757d;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 5px;
+  width: 28%;
+  height: 100%;
+  height:auto;
+  min-height:100%;
+  position:relative;
+}
+ 
+.card-footer{
+  position:absolute;
+  bottom: 0;
+  padding-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-title1, .card-title2, .card-title3{
+  font-family: 'Arial', sans-serif;
+  color: #ffffff;
+}
+
+.card-1{
+  background: #800080;
+  flex-basis: 60%;
+}
+.card-2{
+  background: #000080;
+  flex-basis: 20%;
+  text-align: center;
+}
+.card-3{
+  background: #000080;
+  flex-basis: 20%;
+  text-align: center;
+}
+
+.item{
+  font-size: 0.7rem;
+}
+.card-text1, .card-text2, .card-text3{
+  font-size: 1rem;
+}
+
