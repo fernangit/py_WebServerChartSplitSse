@@ -28,7 +28,7 @@
             <div class="area-body">
               <h1 class="area-title">Atmosphere Chart</h1>
               <p class="area-text1"></p>
-                <canvas id="canvas"></canvas>
+                <canvas id="canvas1"></canvas>
             </div>
         </div>
  
@@ -42,9 +42,10 @@
         </div>
         <div class="area area-4">
             <div class="area-body">
-              <h1 class="area-title">Office Sensor</h1>
+              <h1 class="area-title">Office Temperature</h1>
               <div class="area-text1">
                 <p id="area-text1-1"></p>
+                <canvas id="canvas1-1"></canvas>
               </div>
             </div>
         </div>
@@ -72,8 +73,10 @@
  
         <div class="card card-2">
             <div class="card-body">
-              <h2 class="card-title2">Today's<br>Weather</h2>
-              <div><span id = "city1" class="bold"></span></div>
+              <h2 class="card-title2">
+                <div><span id = "city1" class="bold"></span></div>
+                <br>Today's<br>Weather
+              </h2>
               <div><span id = "weather1" class="bold"></span></div>
               <div><span id = "weatherMark1" class="bold"></span></div>
               <p id="icon"></p>
@@ -84,8 +87,10 @@
  
         <div class="card card-3">
             <div class="card-body">
-              <h2 class="card-title3">Tommorow's Weather</h2>
-              <div><span id = "city2" class="bold"></span></div>
+              <h2 class="card-title2">
+                <div><span id = "city2" class="bold"></span></div>
+                <br>Tommorow's Weather
+              </h2>
               <div><span id = "weather2" class="bold"></span></div>
               <div><span id = "weatherMark2" class="bold"></span></div>
               <p id="icon"></p>
@@ -132,11 +137,17 @@ function getMessage(e) {
     drawChart(emotion);
     //顔文字描画
     drawFace(bestIndex);
+    //におい描画
+//    smell = obj.smell;
+//    writeSmell(smell);
+    //気温描画
+//      datas = get6Data(obj.temp, datas);
+//    writeTemperature(labels, datas);
 }
 
 //グラフ描画
 function drawChart(emotion) {
-    var ctx = document.getElementById("canvas").getContext("2d");
+    var ctx = document.getElementById("canvas1").getContext("2d");
     var option = {
       animation: false,
       legend: {
@@ -298,12 +309,84 @@ function writeSmell(index) {
 </script>
 
 <script>
-function writeSensor(value) {
+function writeTemperature(labels, datas) {
     var titleId = "area-text1-1";
     var p = document.getElementById(titleId);
     console.log(p);
-    p.innerHTML="気温　" + value + "　℃"
+    p.innerHTML="気温　" + datas[5] + "　℃"
+    drawGraph(labels, datas);
 }
+
+function drawGraph(labels, datas) {
+    var ctx = document.getElementById("canvas1-1").getContext("2d");
+    var option = {
+      animation: false,
+      legend: {
+        display: false
+      },
+      scales: {
+        //縦軸の設定
+        yAxes: [{
+          ticks: {
+            //最小値を0にする
+            beginAtZero: true
+          }
+        }]
+      }
+    };
+    window.myLine = new Chart(ctx, {
+      type: 'line',
+      options: option,
+      data: {
+        labels: [labels[0], labels[1], labels[2], labels[3], labels[4], labels[5]],
+        datasets: [{
+          //凡例
+          label: "気温",
+          //背景色
+//          backgroundColor: "rgba(75,192,192,0.4)",
+          //枠線の色
+//          borderColor: "rgba(75,192,192,1)",
+          borderColor: "#ffffff",
+          //グラフのデータ
+          data: [datas[0], datas[1], datas[2], datas[3], datas[4], datas[5]]
+        }],
+      }
+    });
+}
+
+function get6Hour()
+{
+    //今日の日付データを変数dateに格納
+    var date=new Date(); 
+    //時・分・秒を取得する
+    var hour = date.getHours();
+//    var minute = date.getMinutes();
+//    var second = date.getSeconds();
+    //現在時刻から6時間前まで
+    hours = new Array(6);
+    for(var i = 5; i >= 0; i--){
+      hours[i] = hour;
+      hour -= 1;
+      if(hour < 0){
+        hour = 23;
+      }
+    }
+
+    return hours;
+}
+
+function get6Data(value, datas)
+{
+    //最新データに入れ替える
+    for(var i = 0; i < 6-1; i++){
+      datas[i] = datas[i+1];
+    }
+    datas[5] = value
+
+    return datas;
+}
+
+
 </script>
 
 <script>
@@ -314,11 +397,16 @@ function sendRequest()
     console.log(h)
     h.innerHTML = getDate() + "のNews";
     getNews();
-    getWeather(1850147);
-    drawFace(6);
-    drawChart(emotion);
+    getWeather(1863967);
+//    drawFace(6);
+//    drawChart(emotion);
     writeSmell(0);
-    writeSensor(9)
+//    labels = new Array(6);
+//    datas = new Array(6);
+    labels = get6Hour();
+    datas = new Array(12, 19, 3, 5, 2, 3);
+    datas = get6Data(10, datas)
+    writeTemperature(labels, datas);
 }
 
 sendRequest();
@@ -326,4 +414,4 @@ setInterval(sendRequest, RELOAD_INTERVAL_TIME);
 </script>  
   
 </body>
-</html>file:///home/pi/forGit/py_WebServerChartSplitSse/index.py
+</html>

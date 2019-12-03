@@ -10,7 +10,10 @@ Dynamic display switching of a chart and messages on the python web server bottl
 * グラフ表示  
   * Chart.jsの使用  
 * BOX横ならべ  
-  * Flexの使用  
+  * FlexBoxの使用  
+* マウスカーソルを非表示  
+  * unclutterの使用  
+
 
 ## HOW TO USE
 ### インストール
@@ -22,7 +25,23 @@ pip3 install bottle
 GitHubからライブラリをダウンロード  
 https://www.chartjs.org/  
 Zipファイルを解凍して、Chart.min.jsを任意のフォルダに設定  
-py_WebServerChartSplitSse\assets\js\Chart.min.js
+py_WebServerChartSplitSse\assets\js\Chart.min.js  
+円グラフ用オプションをダウンロード  
+https://github.com/emn178/chartjs-plugin-labels  
+Zipファイルを解凍して、Chart.min.jsを任意のフォルダに設定  
+py_WebServerChartSplitSse\assets\js\chartjs-plugin-labels.js  
+
+3. unclutter  
+```
+sudo apt-get install unclutter
+```
+さらに  
+/etc/xdg/lxsession/LXDE/autostart  
+に、以下の文字列を追加し、リブート
+```
+@unclutter -idle 0.1 -root
+```
+
 
 ### サーバ／クライアントの記述
 #### サーバ起動の記述
@@ -154,13 +173,23 @@ Chart.js
 https://www.chartjs.org/  
 グラフ作成にオススメ！「Chart.js」がかんたんに使えてイイ感じ  
 http://vdeep.net/chart-js  
+Chart.jsを使って、棒グラフ、折れ線グラフ、レーダーチャート、円グラフを表示しよう！（サンプル・解説付き）  
+https://www.wp-benricho.com/chart-js/  
+Chart.pieceLabelの利用（対象：円グラフ、ドーナツチャート）  
+http://www.kogures.com/hitoshi/javascript/chartjs/piece-label.html  
+Chart.jsで凡例を削除する  
+https://hacknote.jp/archives/21133/  
 CSSを外部ファイルに記述 - bottle  
 https://tmg0525.hatenadiary.jp/entry/2018/03/04/004706  
 PythonとWebフレームワークとServer Sent Events  
 https://note.mu/v416/n/n2fe9227ad4e1  
 Server-Sent Events はこんなに簡単  
 https://rch850.hatenablog.com/entry/20101207/1291694802  
+【CSS】Flexboxの使い方を徹底解説！基本から実践まで(サンプルあり)  
+https://creive.me/archives/15427/  
 CSSでDIVを横並びにする色々な方法  
 https://webparts.cman.jp/box/siderow/  
+Raspberry Pi でマウスカーソルを非表示にする  
+https://blog.withachristianwife.com/2017/04/09/disable-mouse-cursor-in-raspberry-pi/  
 
 ## License
