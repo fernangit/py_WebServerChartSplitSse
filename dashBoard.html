@@ -42,7 +42,7 @@
         </div>
         <div class="area area-4">
             <div class="area-body">
-              <h1 class="area-title">Office Temperature</h1>
+              <h1 class="area-title">Office<br>Temp & humidity</h1>
               <div class="area-text1">
                 <p id="area-text1-1"></p>
                 <canvas id="canvas1-1"></canvas>
@@ -309,29 +309,40 @@ function writeSmell(index) {
 </script>
 
 <script>
-function writeTemperature(labels, datas) {
-    var titleId = "area-text1-1";
-    var p = document.getElementById(titleId);
-    console.log(p);
-    p.innerHTML="気温　" + datas[5] + "　℃"
-    drawGraph(labels, datas);
+function writeTemperature(labels, temps, humids) {
+    var titleId1 = "area-text1-1";
+    var p1 = document.getElementById(titleId1);
+    p1.innerHTML="気温 " + temps[5] + " ℃　湿度 " + humids[5] + " ％"
+    drawGraph(labels, temps, humids);
 }
 
-function drawGraph(labels, datas) {
+function drawGraph(labels, temps, humids) {
     var ctx = document.getElementById("canvas1-1").getContext("2d");
     var option = {
       animation: false,
-      legend: {
-        display: false
-      },
+//      legend: {
+//        display: false
+//      },
       scales: {
         //縦軸の設定
-        yAxes: [{
+        yAxes: [
+        {
+          id: "y-axis-1",
+          position: "left",
           ticks: {
             //最小値を0にする
             beginAtZero: true
           }
-        }]
+        },
+        {
+          id: "y-axis-2",
+          position: "right",
+          ticks: {
+            //最小値を0にする
+            beginAtZero: true
+          }
+        }
+        ]
       }
     };
     window.myLine = new Chart(ctx, {
@@ -339,17 +350,32 @@ function drawGraph(labels, datas) {
       options: option,
       data: {
         labels: [labels[0], labels[1], labels[2], labels[3], labels[4], labels[5]],
-        datasets: [{
+        datasets: [
+        {
           //凡例
           label: "気温",
           //背景色
-//          backgroundColor: "rgba(75,192,192,0.4)",
+          backgroundColor: "rgba(0,0,0,0)",
           //枠線の色
-//          borderColor: "rgba(75,192,192,1)",
-          borderColor: "#ffffff",
+          borderColor: "rgba(0,0,0,1)",
+//          borderColor: "#ffffff",
           //グラフのデータ
-          data: [datas[0], datas[1], datas[2], datas[3], datas[4], datas[5]]
-        }],
+          data: [temps[0], temps[1], temps[2], temps[3], temps[4], temps[5]],
+          yAxisID: "y-axis-1"
+        },
+        {
+          //凡例
+          label: "湿度",
+          //背景色
+          backgroundColor: "rgba(0,0,0,0)",
+          //枠線の色
+          borderColor: "rgba(200,200,200,1)",
+//          borderColor: "#ffffff",
+          //グラフのデータ
+          data: [humids[0], humids[1], humids[2], humids[3], humids[4], humids[5]],
+          yAxisID: "y-axis-2"
+        }
+        ],
       }
     });
 }
@@ -404,9 +430,11 @@ function sendRequest()
 //    labels = new Array(6);
 //    datas = new Array(6);
     labels = get6Hour();
-    datas = new Array(12, 19, 3, 5, 2, 3);
-    datas = get6Data(10, datas)
-    writeTemperature(labels, datas);
+    temps = new Array(12, 19, 3, 5, 2, 3);
+    humids = new Array(30, 60, 30, 50, 90, 10);
+    temps = get6Data(10, temps)
+    humids = get6Data(80, humids)
+    writeTemperature(labels, temps, humids);
 }
 
 sendRequest();
