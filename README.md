@@ -13,6 +13,7 @@ Dynamic display switching of a chart and messages on the python web server bottl
   * FlexBoxの使用  
 * マウスカーソルを非表示  
   * unclutterの使用  
+* スリープモードをオフ  
 
 
 ## HOW TO USE
@@ -40,6 +41,22 @@ sudo apt-get install unclutter
 に、以下の文字列を追加し、リブート
 ```
 @unclutter -idle 0.1 -root
+```
+4. スリープモードオフ  
+/etc/xdg/lxsession/LXDE/autostart  
+に、以下の文字列を追加
+```
+# スクリーンセーバーをオフに
+@xset s off
+# X serverをオフに 
+@xset s noblank
+# DPMS (Display Power Management Signaling) をオフに
+@xset -dpms
+```
+/etc/lightdm/lightdm.conf  
+に、以下の文字列を追加し、リブート
+```
+xserver-command=X -s 0 -dpms
 ```
 
 
