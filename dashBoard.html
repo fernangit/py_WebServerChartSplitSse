@@ -27,7 +27,7 @@
         <div class="area area-2">
             <div class="area-body">
               <h1 class="area-title">Atmosphere Chart</h1>
-              <p class="area-text1"></p>
+              <p class="area-text1"><br></p>
                 <canvas id="canvas1"></canvas>
             </div>
         </div>
@@ -66,7 +66,6 @@
                 <p id="item-text7"></p>
                 <p id="item-text8"></p>
                 <p id="item-text9"></p>
-                <p id="item-text10"></p>
               </div>
             </div>
         </div>
@@ -210,7 +209,7 @@ function drawFace(index) {
 <script>
 function getNews()
 {
-    var url = 'https://newsapi.org/v2/top-headlines?country=jp&category=business&pageSize=10&apiKey=2bea3b0f1dc646aca06bae5010a7cf4a';
+    var url = 'https://newsapi.org/v2/top-headlines?country=jp&category=business&pageSize=9&apiKey=2bea3b0f1dc646aca06bae5010a7cf4a';
 
     var req = new Request(url);
     fetch(req).then(function(response) {
