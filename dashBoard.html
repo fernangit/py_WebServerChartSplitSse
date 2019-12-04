@@ -62,10 +62,6 @@
                 <p id="item-text3"></p>
                 <p id="item-text4"></p>
                 <p id="item-text5"></p>
-                <p id="item-text6"></p>
-                <p id="item-text7"></p>
-                <p id="item-text8"></p>
-                <p id="item-text9"></p>
               </div>
             </div>
         </div>
@@ -207,21 +203,39 @@ function drawFace(index) {
 </script>
 
 <script>
+function setNews(json, i)
+{
+    for (var j=0;j<5;j++) {
+        var titleId = "item-text" + (j+1);
+        console.log(titleId);
+        var p = document.getElementById(titleId);
+        p.innerHTML = '・' + json.articles[i++].title;
+    }
+}
+
+function doJsonLoop(json, maxCount, cnt, i, t) {
+    console.log(cnt, i);
+    if (i >= 4)
+    {
+        i = 0;
+    }
+    if (cnt < maxCount) {
+        setNews(json, i*5);
+        setTimeout(function(){doJsonLoop(json, maxCount, ++cnt, ++i, t)}, t);
+    }
+}
+
 function getNews()
 {
-    var url = 'https://newsapi.org/v2/top-headlines?country=jp&category=business&pageSize=9&apiKey=2bea3b0f1dc646aca06bae5010a7cf4a';
+    var url = 'https://newsapi.org/v2/top-headlines?country=jp&category=business&pageSize=20&apiKey=2bea3b0f1dc646aca06bae5010a7cf4a';
 
     var req = new Request(url);
     fetch(req).then(function(response) {
         return response.json();
     }).then(function(json) {
         console.log(json)
-        for (var i=0;i<json.articles.length;i++) {
-            var titleId = "item-text" + (i+1);
-            console.log(titleId);
-            var p = document.getElementById(titleId);
-            p.innerHTML = '・' + json.articles[i].title;
-        }
+        //30秒 x 2 x 10回
+        doJsonLoop(json, 20, 0, 0, 1000*30);
     });
 }
 </script>

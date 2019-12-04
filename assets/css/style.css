@@ -116,21 +116,21 @@
 
 .card-1{
   background: #800080;
-  flex-basis: 60%;
+  flex-basis: 70%;
 }
 .card-2{
   background: #000080;
-  flex-basis: 20%;
+  flex-basis: 15%;
   text-align: center;
 }
 .card-3{
   background: #000080;
-  flex-basis: 20%;
+  flex-basis: 15%;
   text-align: center;
 }
 
 .item{
-  font-size: 0.7rem;
+  font-size: 1rem;
 }
 .card-text1, .card-text2, .card-text3{
   font-size: 1rem;
