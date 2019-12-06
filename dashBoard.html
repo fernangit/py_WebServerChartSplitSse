@@ -234,8 +234,8 @@ function getNews()
         return response.json();
     }).then(function(json) {
         console.log(json)
-        //30秒 x 2 x 10回
-        doJsonLoop(json, 20, 0, 0, 1000*30);
+        //30秒 x 2 x 60回
+        doJsonLoop(json, 120, 0, 0, 1000*30);
     });
 }
 </script>
