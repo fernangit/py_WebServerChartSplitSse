@@ -234,8 +234,8 @@ function getNews()
         return response.json();
     }).then(function(json) {
         console.log(json)
-        //30秒 x 2 x 10回
-        doJsonLoop(json, 20, 0, 0, 1000*30);
+        //30秒 x 2 x 60回
+        doJsonLoop(json, 120, 0, 0, 1000*30);
     });
 }
 </script>
@@ -393,7 +393,6 @@ function drawGraph(labels, temps, humids) {
     });
 }
 
-const NUM_OF_HOUR_DATAS=6;
 function get6Hour()
 {
     //今日の日付データを変数dateに格納
@@ -403,8 +402,8 @@ function get6Hour()
 //    var minute = date.getMinutes();
 //    var second = date.getSeconds();
     //現在時刻から6時間前まで
-    hours = new Array(NUM_OF_HOUR_DATAS);
-    for(var i = NUM_OF_HOUR_DATAS-1; i >= 0; i--){
+    hours = new Array(6);
+    for(var i = 5; i >= 0; i--){
       hours[i] = hour;
       hour -= 1;
       if(hour < 0){
@@ -418,10 +417,10 @@ function get6Hour()
 function get6Data(value, datas)
 {
     //最新データに入れ替える
-    for(var i = 0; i < NUM_OF_HOUR_DATAS-1; i++){
+    for(var i = 0; i < 6-1; i++){
       datas[i] = datas[i+1];
     }
-    datas[NUM_OF_HOUR_DATAS-1] = value
+    datas[5] = value
 
     return datas;
 }
@@ -431,14 +430,13 @@ function get6Data(value, datas)
 
 <script>
 const RELOAD_INTERVAL_TIME=1000*60*60;
-const CITY_ID=1863967; //fukuoka
 function sendRequest()
 {
     var h = document.getElementById("card-title1");
     console.log(h)
     h.innerHTML = getDate() + "のNews";
     getNews();
-    getWeather(CITY_ID);
+    getWeather(1863967);
 //    drawFace(6);
 //    drawChart(emotion);
     writeSmell(0);
