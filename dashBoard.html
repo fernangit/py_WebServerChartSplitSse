@@ -37,6 +37,7 @@
               <h1 class="area-title">Office Air</h1>
               <div class="area-text2">
                 <p id="area-text2-2"></p>
+                <p id="area-text2-3"></p>
               </div>
             </div>
         </div>
@@ -308,7 +309,7 @@ function getWeather(cityId)
 
 <script>
 function writeSmell(index) {
-    var titleId = "area-text2-2";
+    var titleId = "area-text2-3";
     var p = document.getElementById(titleId);
     console.log(p);
     if(index == 0){ //bad
@@ -317,6 +318,34 @@ function writeSmell(index) {
         p.innerHTML="Smell Good!!"
     }else{
         p.innerHTML="????"
+    }
+}
+
+function calcDiscomfort(temp, humid) {
+    var discomfortIndex = 0.81*temp+0.01*humid*(0.99*temp-14.3)+46.3;
+    return discomfortIndex;
+}
+
+function writeDiscomfort(index) {
+    var titleId = "area-text2-2";
+    var p = document.getElementById(titleId);
+    console.log(p);
+    if(index < 55){ //寒い
+        p.innerHTML="Feel Stress!!"
+    }else if(55 <= index < 60){ //肌寒い
+        p.innerHTML="Suffer discomfort!!"
+    }else if(60 <= index < 65){ //何も感じない
+        p.innerHTML="Feel Nothing"
+    }else if(65 <= index < 70){ //快い
+        p.innerHTML="Comfortable!!"
+    }else if(70 <= index < 75){ //暑くない
+        p.innerHTML="Feel discomfort"
+    }else if(75 <= index < 80){ //やや暑い
+        p.innerHTML="Suffer discomfort!!"
+    }else if(80 <= index < 85){ //暑くて汗が出る
+        p.innerHTML="Feel Stress!!"
+    }else{  //暑くてたまらない
+        p.innerHTML="Medical Emergency!!"
     }
 }
 </script>
@@ -415,13 +444,13 @@ function get6Hour()
     return hours;
 }
 
-function get6Data(value, datas)
+function get6Data(newData, datas)
 {
     //最新データに入れ替える
     for(var i = 0; i < NUM_OF_HOUR_DATAS-1; i++){
       datas[i] = datas[i+1];
     }
-    datas[NUM_OF_HOUR_DATAS-1] = value
+    datas[NUM_OF_HOUR_DATAS-1] = newData
 
     return datas;
 }
@@ -450,6 +479,7 @@ function sendRequest()
     temps = get6Data(10, temps)
     humids = get6Data(80, humids)
     writeTemperature(labels, temps, humids);
+    writeDiscomfort(calcDiscomfort(10, 80));
 }
 
 sendRequest();
