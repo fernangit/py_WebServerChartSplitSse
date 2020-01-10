@@ -171,6 +171,26 @@ cssに記述。flexを利用する。
 flex-grow      : 1; /* 各BOXを均等に割当て */
 ```
 
+### 温湿度センサ
+独Bosch Sensortec社　BME280  
+RPi.MME280モジュールを利用する。  
+```
+sudo pip3 install Rpi.BME280  
+```
+
+### ガス度センサ
+Shenzhen Dovelet Sensors Technology社　TP-401T
+ADコンバータ　MCP3424  
+```
+sudo sh -c "echo 'mcp3424 0x68' > /sys/bus/i2c/devices/i2c-1/new_device"
+sudo sh -c "echo 15 > /sys/bus/i2c/devices/1-0068/iio\:device0/in_voltage_sampling_frequency"
+```
+常用するには/etc/rc.localに以下を追加する。
+```
+echo 'mcp3424 0x68' > /sys/bus/i2c/devices/i2c-1/new_device
+echo 15 > /sys/bus/i2c/devices/1-0068/iio\:device0/in_voltage_sampling_frequency
+```
+
 ### サーバ起動  
 ```
 python index.py  

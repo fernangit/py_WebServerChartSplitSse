@@ -105,6 +105,8 @@ bestIndex = 0;
 let eventSrc = new EventSource("/sse")
 eventSrc.addEventListener("message", getMessage)
 eventSrc.addEventListener("error", (e) => { console.dir(e) })
+temps = new Array(6);
+humids = new Array(6);
           
 //SSEメッセージ受信
 function getMessage(e) {
@@ -134,11 +136,14 @@ function getMessage(e) {
     //顔文字描画
     drawFace(bestIndex);
     //におい描画
-//    smell = obj.smell;
-//    writeSmell(smell);
+    smell = obj.air;
+    writeSmell(smell);
     //気温描画
-//      datas = get6Data(obj.temp, datas);
-//    writeTemperature(labels, datas);
+    labels = get6Hour();
+    temps = get6Data(obj.temp, temps)
+    humids = get6Data(obj.humid, humids)
+    writeTemperature(labels, temps, humids);
+    writeDiscomfort(calcDiscomfort(obj.temp, obj.humid));
 }
 
 //グラフ描画
@@ -423,6 +428,7 @@ function drawGraph(labels, temps, humids) {
 }
 
 const NUM_OF_HOUR_DATAS=6;
+hours = new Array(NUM_OF_HOUR_DATAS);
 function get6Hour()
 {
     //今日の日付データを変数dateに格納
@@ -432,7 +438,7 @@ function get6Hour()
 //    var minute = date.getMinutes();
 //    var second = date.getSeconds();
     //現在時刻から6時間前まで
-    hours = new Array(NUM_OF_HOUR_DATAS);
+//    hours = new Array(NUM_OF_HOUR_DATAS);
     for(var i = NUM_OF_HOUR_DATAS-1; i >= 0; i--){
       hours[i] = hour;
       hour -= 1;
@@ -473,13 +479,13 @@ function sendRequest()
     writeSmell(0);
 //    labels = new Array(6);
 //    datas = new Array(6);
-    labels = get6Hour();
-    temps = new Array(12, 19, 3, 5, 2, 3);
-    humids = new Array(30, 60, 30, 50, 90, 10);
-    temps = get6Data(10, temps)
-    humids = get6Data(80, humids)
-    writeTemperature(labels, temps, humids);
-    writeDiscomfort(calcDiscomfort(10, 80));
+//    labels = get6Hour();
+//    temps = new Array(12, 19, 3, 5, 2, 3);
+//    humids = new Array(30, 60, 30, 50, 90, 10);
+//    temps = get6Data(10, temps)
+//    humids = get6Data(80, humids)
+//    writeTemperature(labels, temps, humids);
+//    writeDiscomfort(calcDiscomfort(10, 80));
 }
 
 sendRequest();

@@ -13,6 +13,14 @@ import picamera.array
 import cv2
 import analyze_emotion as em
 
+#for ガスセンサー
+import RPi.GPIO as GPIO
+from TP401T import TP401T
+
+#for 温湿度センサー
+import smbus2
+import bme280
+
 #cascade_file = "/home/pi/work/haarcascades/haarcascade_frontalface_default.xml"
 cascade_file = "/home/pi/work/haarcascades/haarcascade_frontalface_alt2.xml"
 
@@ -22,6 +30,15 @@ STATIC_DIR = os.path.join(BASE_DIR, 'assets')
 #感情平均
 predict_mean = np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.4])
 
+#空気
+air_status = TP401T.NORMAL
+
+#温湿度
+BME280_ADDR = 0x76
+BUS_NO = 1
+temp = 0
+humid = 0
+
 @route('/')
 #@view("index.html")
 @view("dashBoard.html")
@@ -30,7 +47,7 @@ def index():
 
 @route('/sse')
 def sse():
-    value = {'angry': 0, 'disgust': 0, 'fear': 0, 'happy': 0, 'sad': 0, 'surprise': 0, 'neutral': 0}
+    value = {'angry': 0, 'disgust': 0, 'fear': 0, 'happy': 0, 'sad': 0, 'surprise': 0, 'neutral': 0, 'air': 0, 'temp': 0, 'humid': 0}
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Content_Type']  = 'text/event-stream'
     while (True):
@@ -63,6 +80,9 @@ def sse():
         value['sad'] = predict_mean[4]
         value['surprise'] = predict_mean[5]
         value['neutral'] = predict_mean[6]
+        value['air'] = air_status
+        value['temp'] = temp
+        value['humid'] = humid
         print('after:', value)
 
         enc = json.dumps(value)
@@ -136,8 +156,39 @@ def face_analyze():
             cv2.destroyAllWindows()
 
 #スレッド開始
-thread = Thread(target=face_analyze)
-thread.start()
+thread1 = Thread(target=face_analyze)
+thread1.start()
+
+def air_analyze():
+    print('air_analyze')
+    sensor = TP401T()
+	sensor.start()
+	print('待機中です')
+	while sensor.state == TP401T.WAITING:	# 測定開始待ち
+		time.sleep(3)
+	while True:
+		air_status = sensor.state
+		time.sleep(3)
+	
+#スレッド開始
+thread2 = Thread(target=air_analyze)
+thread2.start()
+
+def temp_humid_analyze():
+    print('temp_humid_analyze')
+    # BME280
+    i2c = smbus2.SMBus(BUS_NO)
+    bme280.load_calibration_params(i2c, BME280_ADDR)
+
+	while True:
+		data = bme280.sample(i2c, BME280_ADDR)
+		temp = round(data.temperature,1)
+		humid = round(data.humidity,1)
+		time.sleep(1)
+	
+#スレッド開始
+thread3 = Thread(target=temp_humid_analyze)
+thread3.start()
 
 # run(host="localhost", port=8080, debug=True, reloader=True)
 myport = os.getenv("PORT", 8080)
