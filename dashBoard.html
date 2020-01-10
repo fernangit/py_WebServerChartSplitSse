@@ -317,12 +317,14 @@ function writeSmell(index) {
     var titleId = "area-text2-3";
     var p = document.getElementById(titleId);
     console.log(p);
-    if(index == 0){ //bad
+    if(index == 0){ //normal
+        p.innerHTML="Smell Normal"
+    }else if(index == 1){ //bad
+        p.innerHTML="Smell Terrible!!"
+    }else if(index == 2){ //worse
         p.innerHTML="Smell Bad!!"
-    }else if(index == 1){ //good
-        p.innerHTML="Smell Good!!"
     }else{
-        p.innerHTML="????"
+        p.innerHTML="preparing..."
     }
 }
 
@@ -476,7 +478,7 @@ function sendRequest()
     getWeather(CITY_ID);
 //    drawFace(6);
 //    drawChart(emotion);
-    writeSmell(0);
+//    writeSmell(0);
 //    labels = new Array(6);
 //    datas = new Array(6);
 //    labels = get6Hour();
