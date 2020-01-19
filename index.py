@@ -31,7 +31,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'assets')
 predict_mean = np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.4])
 
 #空気
-air_status = TP401T.NORMAL
+air_status = TP401T.WAITING
 
 #温湿度
 BME280_ADDR = 0x76
@@ -50,6 +50,11 @@ def sse():
     value = {'angry': 0, 'disgust': 0, 'fear': 0, 'happy': 0, 'sad': 0, 'surprise': 0, 'neutral': 0, 'air': 0, 'temp': 0, 'humid': 0}
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Content_Type']  = 'text/event-stream'
+
+    global air_status
+    global temp
+    global humid
+
     while (True):
 ####テスト ランダムに感情値を変えてみる
 #        rint = random.randint(0, 6)
@@ -161,14 +166,16 @@ thread1.start()
 
 def air_analyze():
     print('air_analyze')
+    global air_status
     sensor = TP401T()
-	sensor.start()
-	print('待機中です')
-	while sensor.state == TP401T.WAITING:	# 測定開始待ち
-		time.sleep(3)
-	while True:
-		air_status = sensor.state
-		time.sleep(3)
+    sensor.start()
+    print('待機中です')
+    while sensor.state == TP401T.WAITING:	# 測定開始待ち
+        time.sleep(3)
+    while True:
+        air_status = sensor.state
+#        print('air_status:{0}'.format(air_status))
+        time.sleep(3)
 	
 #スレッド開始
 thread2 = Thread(target=air_analyze)
@@ -176,15 +183,19 @@ thread2.start()
 
 def temp_humid_analyze():
     print('temp_humid_analyze')
+    global temp
+    global humid
     # BME280
     i2c = smbus2.SMBus(BUS_NO)
     bme280.load_calibration_params(i2c, BME280_ADDR)
 
-	while True:
-		data = bme280.sample(i2c, BME280_ADDR)
-		temp = round(data.temperature,1)
-		humid = round(data.humidity,1)
-		time.sleep(1)
+    while True:
+        data = bme280.sample(i2c, BME280_ADDR)
+        temp = round(data.temperature,1)
+#        print('temp:{0}'.format(temp))
+        humid = round(data.humidity,1)
+#        print('humid:{0}'.format(humid))
+        time.sleep(1)
 	
 #スレッド開始
 thread3 = Thread(target=temp_humid_analyze)

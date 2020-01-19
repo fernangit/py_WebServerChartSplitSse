@@ -51,6 +51,7 @@ class TP401T(MCP3424):
 		
 		while self.__sleep(3):
 			value = self.getVoltage(self.tp401_ch)
+			print(value)
 			if value < self.normal_value * 1.5:
 				self.__current_state = self.NORMAL
 			else:
