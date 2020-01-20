@@ -43,7 +43,13 @@
 .area-text2{
   color: #ffffff;
   font-family: 'Arial', sans-serif;
-  font-size: 12px;
+  font-size: 5rem;
+}
+
+.area-text3{
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+  font-size: 2rem;
 }
 
 .r-1{

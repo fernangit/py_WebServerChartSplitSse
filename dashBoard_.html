@@ -19,7 +19,7 @@
             <div class="area-body">
               <h1 class="area-title">Office Atmosphere</h1>
               <div class="area-text2">
-                <font size="10"><p id="area-text2-1"></p></font>
+                <p id="area-text2-1"></p>
               </div>
             </div>
         </div>
@@ -34,10 +34,9 @@
  
         <div class="area area-3">
             <div class="area-body">
-              <h1 class="area-title">Office Air Condition</h1>
+              <h1 class="area-title">Office Air</h1>
               <div class="area-text2">
-                <font size="5"><p id="area-text2-3"></p></font>
-                <font size="5"><p id="area-text2-4"></p></font>
+                <p id="area-text2-2"></p>
               </div>
             </div>
         </div>
@@ -105,8 +104,6 @@ bestIndex = 0;
 let eventSrc = new EventSource("/sse")
 eventSrc.addEventListener("message", getMessage)
 eventSrc.addEventListener("error", (e) => { console.dir(e) })
-temps = new Array(6);
-humids = new Array(6);
           
 //SSEメッセージ受信
 function getMessage(e) {
@@ -136,14 +133,11 @@ function getMessage(e) {
     //顔文字描画
     drawFace(bestIndex);
     //におい描画
-    smell = obj.air;
-    writeSmell(smell);
+//    smell = obj.smell;
+//    writeSmell(smell);
     //気温描画
-    labels = get6Hour();
-    temps = get6Data(obj.temp, temps)
-    humids = get6Data(obj.humid, humids)
-    writeTemperature(labels, temps, humids);
-    writeDiscomfort(calcDiscomfort(obj.temp, obj.humid));
+//      datas = get6Data(obj.temp, datas);
+//    writeTemperature(labels, datas);
 }
 
 //グラフ描画
@@ -185,25 +179,25 @@ function drawChart(emotion) {
 
 //顔文字描画
 function drawFace(index) {
-    var titleId1 = "area-text2-1";
-    var p1 = document.getElementById(titleId1);
-    console.log(p1);
+    var titleId = "area-text2-1";
+    var p = document.getElementById(titleId);
+    console.log(p);
     if(index == 0){ //angry
-        p1.innerHTML="(`д´*)"
+        p.innerHTML="(`д´*)"
     }else if(index == 1){ //disgust
-        p1.innerHTML="(´д`)"
+        p.innerHTML="(´д`)"
     }else if(index == 2){ //fear
-        p1.innerHTML="('д';)"
+        p.innerHTML="('д';)"
     }else if(index == 3){ //happy
-        p1.innerHTML="(^-^)"
+        p.innerHTML="(^-^)"
     }else if(index == 4){ //sad
-        p1.innerHTML="(T_T)"
+        p.innerHTML="(T_T)"
     }else if(index == 5){ //surprise
-        p1.innerHTML="(@o@)"
+        p.innerHTML="(@o@)"
     }else if(index == 6){ //neutral
-        p1.innerHTML="(o_o)"
+        p.innerHTML="(o_o)"
     }else{
-        p1.innerHTML="(+_+)"
+        p.innerHTML="(+_+)"
     }
 }
 </script>
@@ -240,8 +234,8 @@ function getNews()
         return response.json();
     }).then(function(json) {
         console.log(json)
-        //30秒 x 2 x 10回
-        doJsonLoop(json, 20, 0, 0, 1000*30);
+        //30秒 x 2 x 60回
+        doJsonLoop(json, 120, 0, 0, 1000*30);
     });
 }
 </script>
@@ -314,45 +308,15 @@ function getWeather(cityId)
 
 <script>
 function writeSmell(index) {
-    var titleId = "area-text2-4";
+    var titleId = "area-text2-2";
     var p = document.getElementById(titleId);
     console.log(p);
-    if(index == 0){ //normal
-        p.innerHTML="Smell Normal"
-    }else if(index == 1){ //bad
-        p.innerHTML="Smell Terrible!!"
-    }else if(index == 2){ //worse
+    if(index == 0){ //bad
         p.innerHTML="Smell Bad!!"
+    }else if(index == 1){ //good
+        p.innerHTML="Smell Good!!"
     }else{
-        p.innerHTML="preparing..."
-    }
-}
-
-function calcDiscomfort(temp, humid) {
-    var discomfortIndex = 0.81*temp+0.01*humid*(0.99*temp-14.3)+46.3;
-    return discomfortIndex;
-}
-
-function writeDiscomfort(index) {
-    var titleId = "area-text2-3";
-    var p = document.getElementById(titleId);
-    console.log(p);
-    if(index < 55){ //寒い
-        p.innerHTML="So Cold!!"
-    }else if(55 <= index < 60){ //肌寒い
-        p.innerHTML="Feel Chilly!!"
-    }else if(60 <= index < 65){ //何も感じない
-        p.innerHTML="Feel Nothing"
-    }else if(65 <= index < 70){ //快い
-        p.innerHTML="Comfortable!!"
-    }else if(70 <= index < 75){ //暑くない
-        p.innerHTML="Feel discomfort"
-    }else if(75 <= index < 80){ //やや暑い
-        p.innerHTML="Suffer discomfort!!"
-    }else if(80 <= index < 85){ //暑くて汗が出る
-        p.innerHTML="Feel Stress!!"
-    }else{  //暑くてたまらない
-        p.innerHTML="Medical Emergency!!"
+        p.innerHTML="????"
     }
 }
 </script>
@@ -406,7 +370,7 @@ function drawGraph(labels, temps, humids) {
           //背景色
           backgroundColor: "rgba(0,0,0,0)",
           //枠線の色
-          borderColor: "rgba(255,76,76,1)",
+          borderColor: "rgba(0,0,0,1)",
 //          borderColor: "#ffffff",
           //グラフのデータ
           data: [temps[0], temps[1], temps[2], temps[3], temps[4], temps[5]],
@@ -418,7 +382,7 @@ function drawGraph(labels, temps, humids) {
           //背景色
           backgroundColor: "rgba(0,0,0,0)",
           //枠線の色
-          borderColor: "rgba(76,165,255,1)",
+          borderColor: "rgba(200,200,200,1)",
 //          borderColor: "#ffffff",
           //グラフのデータ
           data: [humids[0], humids[1], humids[2], humids[3], humids[4], humids[5]],
@@ -429,8 +393,6 @@ function drawGraph(labels, temps, humids) {
     });
 }
 
-const NUM_OF_HOUR_DATAS=6;
-hours = new Array(NUM_OF_HOUR_DATAS);
 function get6Hour()
 {
     //今日の日付データを変数dateに格納
@@ -440,8 +402,8 @@ function get6Hour()
 //    var minute = date.getMinutes();
 //    var second = date.getSeconds();
     //現在時刻から6時間前まで
-//    hours = new Array(NUM_OF_HOUR_DATAS);
-    for(var i = NUM_OF_HOUR_DATAS-1; i >= 0; i--){
+    hours = new Array(6);
+    for(var i = 5; i >= 0; i--){
       hours[i] = hour;
       hour -= 1;
       if(hour < 0){
@@ -452,13 +414,13 @@ function get6Hour()
     return hours;
 }
 
-function get6Data(newData, datas)
+function get6Data(value, datas)
 {
     //最新データに入れ替える
-    for(var i = 0; i < NUM_OF_HOUR_DATAS-1; i++){
+    for(var i = 0; i < 6-1; i++){
       datas[i] = datas[i+1];
     }
-    datas[NUM_OF_HOUR_DATAS-1] = newData
+    datas[5] = value
 
     return datas;
 }
@@ -468,27 +430,24 @@ function get6Data(newData, datas)
 
 <script>
 const RELOAD_INTERVAL_TIME=1000*60*60;
-const CITY_ID=1863967; //fukuoka
 function sendRequest()
 {
     var h = document.getElementById("card-title1");
     console.log(h)
     h.innerHTML = getDate() + "のNews";
     getNews();
-    getWeather(CITY_ID);
-    drawFace(6);
+    getWeather(1863967);
+//    drawFace(6);
 //    drawChart(emotion);
     writeSmell(0);
-    writeDiscomfort(0);
 //    labels = new Array(6);
 //    datas = new Array(6);
-//    labels = get6Hour();
-//    temps = new Array(12, 19, 3, 5, 2, 3);
-//    humids = new Array(30, 60, 30, 50, 90, 10);
-//    temps = get6Data(10, temps)
-//    humids = get6Data(80, humids)
-//    writeTemperature(labels, temps, humids);
-//    writeDiscomfort(calcDiscomfort(10, 80));
+    labels = get6Hour();
+    temps = new Array(12, 19, 3, 5, 2, 3);
+    humids = new Array(30, 60, 30, 50, 90, 10);
+    temps = get6Data(10, temps)
+    humids = get6Data(80, humids)
+    writeTemperature(labels, temps, humids);
 }
 
 sendRequest();
