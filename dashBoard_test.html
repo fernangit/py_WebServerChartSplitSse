@@ -19,7 +19,7 @@
             <div class="area-body">
               <h1 class="area-title">Office Atmosphere</h1>
               <div class="area-text2">
-                <font size="10"><p id="area-text2-1"></p></font>
+                <p id="area-text2-1"></p>
               </div>
             </div>
         </div>
@@ -35,9 +35,9 @@
         <div class="area area-3">
             <div class="area-body">
               <h1 class="area-title">Office Air Condition</h1>
-              <div class="area-text2">
-                <font size="5"><p id="area-text2-3"></p></font>
-                <font size="5"><p id="area-text2-4"></p></font>
+              <div class="area-text3">
+                <p id="area-text3-1"></p>
+                <p id="area-text3-2"></p>
               </div>
             </div>
         </div>
@@ -185,25 +185,25 @@ function drawChart(emotion) {
 
 //顔文字描画
 function drawFace(index) {
-    var titleId1 = "area-text2-1";
-    var p1 = document.getElementById(titleId1);
-    console.log(p1);
+    var titleId = "area-text2-1";
+    var p = document.getElementById(titleId);
+    console.log(p);
     if(index == 0){ //angry
-        p1.innerHTML="(`д´*)"
+        p.innerHTML="(`д´*)"
     }else if(index == 1){ //disgust
-        p1.innerHTML="(´д`)"
+        p.innerHTML="(´д`)"
     }else if(index == 2){ //fear
-        p1.innerHTML="('д';)"
+        p.innerHTML="('д';)"
     }else if(index == 3){ //happy
-        p1.innerHTML="(^-^)"
+        p.innerHTML="(^-^)"
     }else if(index == 4){ //sad
-        p1.innerHTML="(T_T)"
+        p.innerHTML="(T_T)"
     }else if(index == 5){ //surprise
-        p1.innerHTML="(@o@)"
+        p.innerHTML="(@o@)"
     }else if(index == 6){ //neutral
-        p1.innerHTML="(o_o)"
+        p.innerHTML="(o_o)"
     }else{
-        p1.innerHTML="(+_+)"
+        p.innerHTML="(+_+)"
     }
 }
 </script>
@@ -314,7 +314,7 @@ function getWeather(cityId)
 
 <script>
 function writeSmell(index) {
-    var titleId = "area-text2-4";
+    var titleId = "area-text3-1";
     var p = document.getElementById(titleId);
     console.log(p);
     if(index == 0){ //normal
@@ -334,7 +334,7 @@ function calcDiscomfort(temp, humid) {
 }
 
 function writeDiscomfort(index) {
-    var titleId = "area-text2-3";
+    var titleId = "area-text3-2";
     var p = document.getElementById(titleId);
     console.log(p);
     if(index < 55){ //寒い
