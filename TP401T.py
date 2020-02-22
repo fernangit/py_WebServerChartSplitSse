@@ -11,6 +11,7 @@ class TP401T(MCP3424):
 	
 	term = False
 	__current_state = -1
+	__current_value = -1
 	
 	def __init__(self, ch = 0):
 		super().__init__()
@@ -38,6 +39,7 @@ class TP401T(MCP3424):
 		
 	def __measure(self):
 		self.__current_state = self.WAITING
+		self.__current_value = -1
 		
 		sum = 0.0
 		for i in range(10):
@@ -48,10 +50,11 @@ class TP401T(MCP3424):
 		self.normal_value = sum / 10
 		self.prev_value = self.normal_value
 		self.__current_state = self.NORMAL
+		self.__current_value = self.normal_value
 		
 		while self.__sleep(3):
 			value = self.getVoltage(self.tp401_ch)
-			print(value)
+#			print(value)
 			if value < self.normal_value * 1.5:
 				self.__current_state = self.NORMAL
 			else:
@@ -61,13 +64,15 @@ class TP401T(MCP3424):
 					self.__current_state = self.WARNING
 			
 			self.prev_value = value
+			self.__current_value = value
 	
 	@property
 	def state(self):
 		return self.__current_state
 
+	@property
 	def value(self):
-		return self.normal_value
+		return self.__current_value
 	
 	def __del__(self):
 		self.term = True

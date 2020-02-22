@@ -48,7 +48,7 @@ def index():
 
 @route('/sse')
 def sse():
-    value = {'angry': 0, 'disgust': 0, 'fear': 0, 'happy': 0, 'sad': 0, 'surprise': 0, 'neutral': 0, 'air': 0, 'temp': 0, 'humid': 0}
+    value = {'angry': 0, 'disgust': 0, 'fear': 0, 'happy': 0, 'sad': 0, 'surprise': 0, 'neutral': 0, 'air': 0, 'airValue': 0, 'temp': 0, 'humid': 0}
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Content_Type']  = 'text/event-stream'
 
@@ -179,7 +179,7 @@ def air_analyze():
     while True:
         air_status = sensor.state
         air_value = sensor.value
-#        print('air_status:{0}'.format(air_status))
+#        print('air_status:{0} air_value:{1}'.format(air_status, air_value))
         time.sleep(3)
 	
 #スレッド開始

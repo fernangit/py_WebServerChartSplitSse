@@ -14,7 +14,10 @@
   padding: 20px;
   margin: 5px;
   width: 28%;
-  height: auto;
+  min-height: 350px;
+  height: 100%;
+  height:auto;
+  min-height:100%;
   position:relative;
   text-align: center;
 }
@@ -46,7 +49,7 @@
 .area-text3{
   color: #ffffff;
   font-family: 'Arial', sans-serif;
-  font-size: 1rem;
+  font-size: 2rem;
 }
 
 .r-1{

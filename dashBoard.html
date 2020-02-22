@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
-<script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
+  <script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
   <script src="assets/js/Chart.min.js"></script>
   <script src="assets/js/chartjs-plugin-labels.js"></script>
 </head>
@@ -347,19 +347,20 @@ function writeDiscomfort(index) {
     var titleId = "area-text3-2";
     var p = document.getElementById(titleId);
     console.log(p);
-    if(index < 55){ //寒い
+
+    if(index < 55.0){ //寒い
         p.innerHTML="So Cold!!"
-    }else if(55 <= index < 60){ //肌寒い
+    }else if(55.0 <= index && index < 60.0){ //肌寒い
         p.innerHTML="Feel Chilly!!"
-    }else if(60 <= index < 65){ //何も感じない
+    }else if(60.0 <= index && index < 65.0){ //何も感じない
         p.innerHTML="Feel Nothing"
-    }else if(65 <= index < 70){ //快い
+    }else if(65.0 <= index && index < 70.0){ //快い
         p.innerHTML="Comfortable!!"
-    }else if(70 <= index < 75){ //暑くない
+    }else if(70.0 <= index && index < 75.0){ //暑くない
         p.innerHTML="Feel discomfort"
-    }else if(75 <= index < 80){ //やや暑い
+    }else if(75.0 <= index && index < 80.0){ //やや暑い
         p.innerHTML="Suffer discomfort!!"
-    }else if(80 <= index < 85){ //暑くて汗が出る
+    }else if(80.0 <= index && index < 85.0){ //暑くて汗が出る
         p.innerHTML="Feel Stress!!"
     }else{  //暑くてたまらない
         p.innerHTML="Medical Emergency!!"
@@ -378,7 +379,7 @@ function writeTemperature(labels, temps, humids) {
 function writeAir(labels, airValues, discomfortValues) {
     var titleId1 = "area-text1-1";
     var p1 = document.getElementById(titleId1);
-    p1.innerHTML="ガス " + airValues[5] + " 　不快指数 " + discomfortValues[5]
+    p1.innerHTML="におい " + airValues[5].toFixed(2) + " 　不快指数 " + discomfortValues[5].toFixed(2)
     drawGraph(labels, airValues, discomfortValues, "におい", "不快指数");
 }
 
