@@ -32,6 +32,7 @@ predict_mean = np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.4])
 
 #空気
 air_status = TP401T.WAITING
+air_value = 0
 
 #温湿度
 BME280_ADDR = 0x76
@@ -52,6 +53,7 @@ def sse():
     response.headers['Content_Type']  = 'text/event-stream'
 
     global air_status
+    global air_value
     global temp
     global humid
 
@@ -86,6 +88,7 @@ def sse():
         value['surprise'] = predict_mean[5]
         value['neutral'] = predict_mean[6]
         value['air'] = air_status
+        value['airValue'] = air_value
         value['temp'] = temp
         value['humid'] = humid
         print('after:', value)
@@ -167,6 +170,7 @@ thread1.start()
 def air_analyze():
     print('air_analyze')
     global air_status
+    global air_value
     sensor = TP401T()
     sensor.start()
     print('待機中です')
@@ -174,6 +178,7 @@ def air_analyze():
         time.sleep(3)
     while True:
         air_status = sensor.state
+        air_value = sensor.value
 #        print('air_status:{0}'.format(air_status))
         time.sleep(3)
 	

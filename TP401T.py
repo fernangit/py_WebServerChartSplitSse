@@ -65,6 +65,9 @@ class TP401T(MCP3424):
 	@property
 	def state(self):
 		return self.__current_state
+
+	def value(self):
+		return self.normal_value
 	
 	def __del__(self):
 		self.term = True

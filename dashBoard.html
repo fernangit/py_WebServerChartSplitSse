@@ -43,7 +43,7 @@
         </div>
         <div class="area area-4">
             <div class="area-body">
-              <h1 class="area-title">Office<br>Temp & humidity</h1>
+              <h1 class="area-title">Office Gas<br>& Discomfort Index</h1>
               <div class="area-text1">
                 <p id="area-text1-1"></p>
                 <canvas id="canvas1-1"></canvas>
@@ -107,7 +107,9 @@ eventSrc.addEventListener("message", getMessage)
 eventSrc.addEventListener("error", (e) => { console.dir(e) })
 temps = new Array(6);
 humids = new Array(6);
-          
+airValues = new Array(6);
+discomfortValues = new Array(6);
+
 //SSEメッセージ受信
 function getMessage(e) {
 //    emotion[Math.floor( Math.random() * 7)] = parseInt(e.data, 10);
@@ -139,11 +141,17 @@ function getMessage(e) {
     smell = obj.air;
     writeSmell(smell);
     //気温描画
-    labels = get6Hour();
+    labels = get6Label();
     temps = get6Data(obj.temp, temps)
     humids = get6Data(obj.humid, humids)
-    writeTemperature(labels, temps, humids);
+//    writeTemperature(labels, temps, humids);
+    //不快指数度表示
     writeDiscomfort(calcDiscomfort(obj.temp, obj.humid));
+    //ガス、不快指数描画
+    airValues = get6Data(obj.airValue, airValues)
+    discomfortValues = get6Data(calcDiscomfort(obj.temp, obj.humid), discomfortValues)
+    writeAir(labels, airValues, discomfortValues);
+
 }
 
 //グラフ描画
@@ -328,11 +336,13 @@ function writeSmell(index) {
     }
 }
 
+//不快指数計算
 function calcDiscomfort(temp, humid) {
     var discomfortIndex = 0.81*temp+0.01*humid*(0.99*temp-14.3)+46.3;
     return discomfortIndex;
 }
 
+//不快度表示
 function writeDiscomfort(index) {
     var titleId = "area-text3-2";
     var p = document.getElementById(titleId);
@@ -362,10 +372,17 @@ function writeTemperature(labels, temps, humids) {
     var titleId1 = "area-text1-1";
     var p1 = document.getElementById(titleId1);
     p1.innerHTML="気温 " + temps[5] + " ℃　湿度 " + humids[5] + " ％"
-    drawGraph(labels, temps, humids);
+    drawGraph(labels, temps, humids, "気温", "湿度");
 }
 
-function drawGraph(labels, temps, humids) {
+function writeAir(labels, airValues, discomfortValues) {
+    var titleId1 = "area-text1-1";
+    var p1 = document.getElementById(titleId1);
+    p1.innerHTML="ガス " + airValues[5] + " 　不快指数 " + discomfortValues[5]
+    drawGraph(labels, airValues, discomfortValues, "におい", "不快指数");
+}
+
+function drawGraph(labels, data1, data2, label1, label2) {
     var ctx = document.getElementById("canvas1-1").getContext("2d");
     var option = {
       animation: false,
@@ -402,26 +419,26 @@ function drawGraph(labels, temps, humids) {
         datasets: [
         {
           //凡例
-          label: "気温",
+          label: label1,
           //背景色
           backgroundColor: "rgba(0,0,0,0)",
           //枠線の色
           borderColor: "rgba(255,76,76,1)",
 //          borderColor: "#ffffff",
           //グラフのデータ
-          data: [temps[0], temps[1], temps[2], temps[3], temps[4], temps[5]],
+          data: [data1[0], data1[1], data1[2], data1[3], data1[4], data1[5]],
           yAxisID: "y-axis-1"
         },
         {
           //凡例
-          label: "湿度",
+          label: label2,
           //背景色
           backgroundColor: "rgba(0,0,0,0)",
           //枠線の色
           borderColor: "rgba(76,165,255,1)",
 //          borderColor: "#ffffff",
           //グラフのデータ
-          data: [humids[0], humids[1], humids[2], humids[3], humids[4], humids[5]],
+          data: [data2[0], data2[1], data2[2], data2[3], data2[4], data2[5]],
           yAxisID: "y-axis-2"
         }
         ],
@@ -429,36 +446,40 @@ function drawGraph(labels, temps, humids) {
     });
 }
 
-const NUM_OF_HOUR_DATAS=6;
-hours = new Array(NUM_OF_HOUR_DATAS);
-function get6Hour()
+const NUM_OF_LABEL_DATAS=6;
+labels = new Array(NUM_OF_LABEL_DATAS);
+function get6Label()
 {
     //今日の日付データを変数dateに格納
     var date=new Date(); 
     //時・分・秒を取得する
     var hour = date.getHours();
-//    var minute = date.getMinutes();
-//    var second = date.getSeconds();
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
     //現在時刻から6時間前まで
-//    hours = new Array(NUM_OF_HOUR_DATAS);
-    for(var i = NUM_OF_HOUR_DATAS-1; i >= 0; i--){
-      hours[i] = hour;
-      hour -= 1;
-      if(hour < 0){
-        hour = 23;
+    for(var i = NUM_OF_LABEL_DATAS-1; i >= 0; i--){
+//      labels[i] = hour;
+//      hour -= 1;
+//      if(hour < 0){
+//        hour = 23;
+//      }
+      labels[i] = second;
+      second -= 1;
+      if(second < 0){
+        hour = 59;
       }
     }
 
-    return hours;
+    return labels;
 }
 
 function get6Data(newData, datas)
 {
     //最新データに入れ替える
-    for(var i = 0; i < NUM_OF_HOUR_DATAS-1; i++){
+    for(var i = 0; i < NUM_OF_LABEL_DATAS-1; i++){
       datas[i] = datas[i+1];
     }
-    datas[NUM_OF_HOUR_DATAS-1] = newData
+    datas[NUM_OF_LABEL_DATAS-1] = newData
 
     return datas;
 }
@@ -482,7 +503,7 @@ function sendRequest()
 //    writeDiscomfort(0);
 //    labels = new Array(6);
 //    datas = new Array(6);
-//    labels = get6Hour();
+//    labels = get6Label();
 //    temps = new Array(12, 19, 3, 5, 2, 3);
 //    humids = new Array(30, 60, 30, 50, 90, 10);
 //    temps = get6Data(10, temps)
